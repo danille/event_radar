@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from utils import *
 from src.collect_data import collect_data_from_RSS_feeds
 
@@ -30,6 +31,7 @@ if __name__ == '__main__':
     # Next step - data collecting. Take list of feeds and collect articles
     # Articles from particular portal will be saved in appropriate JSON file
     collect_data_from_RSS_feeds()
+
 
     # Then data must be processed. Feature extraction.
     # Features should be stored as a matrix in memory.
