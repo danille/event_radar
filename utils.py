@@ -12,6 +12,7 @@ SRC_DIR = os.path.join(BASE_DIR, 'src')
 MODELS_DIR = os.path.join(BASE_DIR, 'models')
 TODAY_RAW_DATA_DIR = os.path.join(RAW_DATA_DIR, TODAY)
 TODAY_CLEANED_DATA_DIR = os.path.join(CLEANED_DATA_DIR, TODAY)
+TODAY_MODELS_DIR = os.path.join(MODELS_DIR, TODAY)
 
 
 def make_dir(path):
@@ -41,5 +42,5 @@ def get_list_of_files_in_dir(path_to_dir: str) -> list:
 
 
 def prepare_structure():
-    for directory in [DATA_DIR, CLEANED_DATA_DIR, EXTERNAL_DATA_DIR, RAW_DATA_DIR, MODELS_DIR]:
+    for directory in [DATA_DIR, CLEANED_DATA_DIR, EXTERNAL_DATA_DIR, RAW_DATA_DIR, MODELS_DIR, TODAY_MODELS_DIR]:
         make_dir(directory)

@@ -1,3 +1,4 @@
+from src.text_cleaning import remove_stopwords
 from scipy.spatial.distance import cosine
 from collections import Counter
 import numpy as np
@@ -43,8 +44,7 @@ class Article:
         return {'title': self._title,
                 'summary': self._summary,
                 'link': self._link,
-                'features': self._features,
-                'cluster': self._cluster.id
+                'cluster': self._cluster.id()
                 }
 
     def __str__(self) -> str:
@@ -75,7 +75,7 @@ class Cluster:
         """
         words_counter = Counter()
         for article in self._objects:
-            words_counter.update(article.title.split())
+            words_counter.update(remove_stopwords(article.title.split()))
 
         return [word_occurrences[0] for word_occurrences in words_counter.most_common(10)]
 

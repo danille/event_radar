@@ -1,4 +1,5 @@
 import re
+from sklearn.feature_extraction import stop_words
 from utils import *
 
 
@@ -23,6 +24,10 @@ def remove_special_chars_from_string(usr_string: str) -> str:
 def remove_numbers_from_string(usr_string: str) -> str:
     result = re.sub(r'\d+', '', usr_string)
     return result
+
+
+def remove_stopwords(list_of_words: list) -> list:
+    return [word for word in list_of_words if word not in stop_words.ENGLISH_STOP_WORDS]
 
 
 def clean_data():

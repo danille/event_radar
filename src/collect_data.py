@@ -45,11 +45,13 @@ def collect_data_from_RSS_feeds():
     path_to_rss = os.path.join(EXTERNAL_DATA_DIR, 'feeds.xlsx')
     rss_urls = get_feeds_list(path_to_rss)
     for rss_url in rss_urls:
+        print(f'Collecting data from {rss_url}')
         feed = parse_feed(rss_url)
 
         make_dir(os.path.join(RAW_DATA_DIR, TODAY))
 
         feed_title = get_feed_title_from_url(rss_url)
-        json_file_path = os.path.join(RAW_DATA_DIR, TODAY, feed_title)
+        feed_file_name = feed_title + '.json'
+        json_file_path = os.path.join(RAW_DATA_DIR, TODAY, feed_file_name)
 
         write_list_to_JSON(feed, json_file_path)

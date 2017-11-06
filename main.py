@@ -29,10 +29,12 @@ if __name__ == '__main__':
 
     # Next step - data collecting. Take list of feeds and collect articles
     # Articles from particular portal will be saved in appropriate JSON file
-    # collect_data_from_RSS_feeds()
+    print('Starting to collect data from RSS feeds...')
+    collect_data_from_RSS_feeds()
 
     # Data must be cleaned.
-    # clean_data()
+    print('Cleaning the data...')
+    clean_data()
 
     # Then data must be processed. Feature extraction.
     # Features should be stored as a matrix in memory.
@@ -61,5 +63,12 @@ if __name__ == '__main__':
     # Then we train model with
     # train_model()
     for threshold in range(1, 10, 1):
-        threshold *= 0.1
+        threshold = round(threshold * 0.1, 2)
         clusters = build_model(articles, threshold=threshold)
+
+        prepared_model = [cluster.to_dict() for cluster in clusters]
+        model_file_name = str(threshold).replace('.', '_') + '.json'
+        path_to_model_file = os.path.join(MODELS_DIR, TODAY, model_file_name)
+        write_list_to_JSON(prepared_model, path_to_model_file)
+
+    print(f'All processes have been done. Models are built and saved in {TODAY_MODELS_DIR}')
