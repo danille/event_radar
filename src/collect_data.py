@@ -28,7 +28,6 @@ def parse_feed(feed_url: str) -> list:
                       'summary': entry['summary'],
                       'link': entry['link']}
         entries.append(entry_dict)
-        print(entry_dict['summary'])
     return entries
 
 

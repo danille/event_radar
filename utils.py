@@ -25,7 +25,7 @@ def make_dir(path):
 
 
 def write_list_to_JSON(list_of_objects, path_to_json: str) -> None:
-    with open(path_to_json + '.json', 'w', encoding='utf-8') as json_file:
+    with open(path_to_json, 'w', encoding='utf-8') as json_file:
         json.dump(list_of_objects, json_file)
 
 
@@ -38,3 +38,8 @@ def read_list_from_JSON(path_to_json: str) -> list:
 def get_list_of_files_in_dir(path_to_dir: str) -> list:
     return [filename for filename in os.listdir(path_to_dir) if
             os.path.isfile(os.path.join(path_to_dir, filename))]
+
+
+def prepare_structure():
+    for directory in [DATA_DIR, CLEANED_DATA_DIR, EXTERNAL_DATA_DIR, RAW_DATA_DIR, MODELS_DIR]:
+        make_dir(directory)
