@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from sklearn.feature_extraction.text import TfidfVectorizer
 from src.model_training import *
+import pandas as pd
+import matplotlib.pyplot as plt
 
 from utils import *
 from src.collect_data import collect_data_from_RSS_feeds
@@ -45,8 +47,17 @@ if __name__ == '__main__':
         json_content = read_list_from_JSON(os.path.join(TODAY_CLEANED_DATA_DIR, json_file_path))
         feed_articles = []
         for article in json_content:
-            new_article = Article(title=article['title'], summary=article['summary'], link=article['link'])
-            article_title_and_summary = ' '.join([article['title'], article['summary']])
+            article_title_ = article['title']
+            article_link_ = link = article['link']
+            new_article = Article(title=article_title_, link=article_link_)
+
+            try:
+                article_summary_ = article['summary']
+            except KeyError:
+                article_summary_ = ''
+                print(f'Unable to obtain summary of article with title {article_title_} for corpus composing')
+
+            article_title_and_summary = ' '.join([article_title_, article_summary_])
             feed_articles.append(article_title_and_summary)
             articles.append(new_article)
         articles_corpus.extend(feed_articles)
@@ -54,16 +65,29 @@ if __name__ == '__main__':
     vectorizer = TfidfVectorizer(max_df=1.0, stop_words='english', use_idf=True, norm='l2')
 
     tfidf_matrix = vectorizer.fit_transform(articles_corpus)
+    features = vectorizer.get_feature_names()
 
+
+    def top_tfidf_feats(row, features, top_n=25):
+        ''' Get top n tfidf values in row and return them with their corresponding feature names.'''
+        topn_ids = np.argsort(row)[::-1][:top_n]
+        top_feats = [(features[i], row[i]) for i in topn_ids]
+        df = pd.DataFrame(top_feats)
+        df.columns = ['feature', 'tfidf']
+        return df
+
+
+    articles_top_tfidf_feats = []
     previous_article_features = None
     for article, article_features in zip(articles, tfidf_matrix):
         article.features = article_features.todense()
         previous_article_features = article.features
+        articles_top_tfidf_feats.append(top_tfidf_feats(article_features, features=features))
 
     # Then we train model with
     # train_model()
-    for threshold in range(1, 10, 1):
-        threshold = round(threshold * 0.1, 2)
+    for threshold in range(90, 100, 1):
+        threshold = round(threshold * 0.01, 2)
         clusters = build_model(articles, threshold=threshold)
 
         prepared_model = [cluster.to_dict() for cluster in clusters]

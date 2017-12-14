@@ -43,12 +43,16 @@ def clean_data():
         json_content = read_list_from_JSON(os.path.join(TODAY_RAW_DATA_DIR, json_file))
         cleaned_articles = []
         for article in json_content:
-            cleaned_summary = clean_string(article['summary'])
-            cleaned_title = clean_string(article['title'])
-
-            cleaned_article = {'title': cleaned_title,
-                               'summary': cleaned_summary,
-                               'link': article['link']}
-            cleaned_articles.append(cleaned_article)
+            cleaned_article = {}
+            for field in article:
+                cleaned_field = clean_string(article[field])
+                cleaned_article[field] = cleaned_field
+                cleaned_articles.append(cleaned_article)
+                # cleaned_title = clean_string(article['title'])
+                #
+                # cleaned_article = {'title': cleaned_title,
+                #                    'summary': cleaned_summary,
+                #                    'link': article['link']}
+                # cleaned_articles.append(cleaned_article)
 
         write_list_to_JSON(cleaned_articles, os.path.join(TODAY_CLEANED_DATA_DIR, json_file))

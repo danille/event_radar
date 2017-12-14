@@ -24,9 +24,16 @@ def parse_feed(feed_url: str) -> list:
     d = fp.parse(feed_url)
     entries = []
     for entry in d.entries:
-        entry_dict = {'title': entry['title'],
-                      'summary': entry['summary'],
-                      'link': entry['link']}
+
+        entry_title_ = entry['title']
+        entry_link_ = entry['link']
+        entry_dict = {'title': entry_title_,
+                      'link': entry_link_}
+        try:
+            entry_summary_ = entry['summary']
+            entry_dict['summary'] = entry_summary_
+        except KeyError:
+            print(f'Unable to get summary field from article with title {entry_title_}')
         entries.append(entry_dict)
     return entries
 

@@ -5,7 +5,7 @@ import numpy as np
 
 
 class Article:
-    def __init__(self, title, summary, link, features=None, cluster=None):
+    def __init__(self, title, link, features=None, cluster=None, summary=None):
         self._title = title
         self._summary = summary
         self._link = link
@@ -19,6 +19,10 @@ class Article:
     @property
     def summary(self):
         return self._summary
+
+    @summary.setter
+    def summary(self, summary):
+        self._summary = summary
 
     @property
     def link(self):
